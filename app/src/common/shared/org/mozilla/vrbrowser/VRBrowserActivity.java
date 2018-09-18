@@ -217,8 +217,6 @@ public class VRBrowserActivity extends PlatformActivity implements WidgetManager
 
         SessionStore.get().clearListeners();
         super.onDestroy();
-        // FIXME: HACK TO KILL GECKO BETWEEN RUNS.
-        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override

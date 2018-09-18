@@ -534,6 +534,9 @@ void
 BrowserWorld::ShutdownJava() {
   ASSERT_ON_RENDER_THREAD();
   VRB_LOG("BrowserWorld::ShutdownJava");
+  if (m.externalVR) {
+    m.externalVR->Shutdown();
+  }
   GeckoSurfaceTexture::ShutdownJava();
   VRBrowser::ShutdownJava();
   if (m.env) {

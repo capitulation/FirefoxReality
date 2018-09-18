@@ -420,6 +420,26 @@ ExternalVR::StopPresenting() {
   m.waitingForExit = true;
 }
 
+void
+ExternalVR::Shutdown() {
+  m.system.displayState.shutdown = true;
+  m.system.displayState.mSuppressFrames = true;
+  PushSystemState();
+
+  // Wait until Gecko has processed the shutdown message
+  // Otherwise the shmem data may be deallocated before Gecko processes it, leading to undefined behaviour
+  Wait wait(m.data.browserMutex, m.data.browserCond);
+  wait.Lock();
+  m.PullBrowserStateWhileLocked();
+  while (!m.data.browserState.shutdown) {
+    if (!wait.DoWait(0.1)) {
+      VRB_WARN("FXR Shutdown wait timeout");
+      break;
+    }
+    m.PullBrowserStateWhileLocked();
+  }
+}
+
 ExternalVR::ExternalVR(State& aState) : m(aState) {
   PushSystemState();
 }

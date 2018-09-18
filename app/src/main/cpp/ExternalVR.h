@@ -40,6 +40,7 @@ public:
                       const double aBottomDegrees) override;
   void SetEyeOffset(const device::Eye aEye, const float aX, const float aY, const float aZ) override;
   void SetEyeResolution(const int32_t aX, const int32_t aY) override;
+  void CompleteEnumeration() override;
   // ExternalVR interface
   void PushSystemState();
   void PullBrowserState();
@@ -50,7 +51,7 @@ public:
   bool WaitFrameResult();
   void GetFrameResult(int32_t& aSurfaceHandle, device::EyeRect& aLeftEye, device::EyeRect& aRightEye) const;
   void StopPresenting();
-  void CompleteEnumeration() override;
+  void Shutdown();
 protected:
   struct State;
   ExternalVR(State& aState);
